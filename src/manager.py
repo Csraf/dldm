@@ -11,13 +11,8 @@ from bean.rbm import RBM
 from bean.svm import SVM
 
 
-""" 
-    对象管理器：管理算法对象，执行训练测试等任务。
-
-"""
-
-
 class Manager(object):
+    """  对象管理器：管理算法对象，执行训练测试等任务。"""
     def __init__(self, device='cpu'):
         self.device = device
 
