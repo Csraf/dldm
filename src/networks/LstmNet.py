@@ -5,7 +5,7 @@ from src.base.base_net import BaseNet
 
 class LstmNet(BaseNet):
     """
-    LstmNet 代表 lstm-autoencoder 的网络结构
+    dldm 的 lstm 部分的网络结构
 
     结构：
         encoder
@@ -21,12 +21,7 @@ class LstmNet(BaseNet):
             连接层：[128, 9]
 
     注意：
-        1. 在网络中解码层的输出部分加入了 sigmoid 模块，限制输出范围[0,1]，
-           这是因为后面的 svdd-autoencoder 要求网络的输入范围为[0,1].
-        2. 下面只是简单地展示了单层的 lstm 结构，后面根据需求决定是否更改.
-
-    改动：
-        1. 特征修改为12个，改变输入维度
+        1. 下面只是简单地展示了单层的 lstm 结构，后面根据需求决定是否更改.
 
     """
 

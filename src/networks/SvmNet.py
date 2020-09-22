@@ -2,14 +2,11 @@ import torch
 import torch.nn as nn
 from base.base_net import BaseNet
 
-"""
-    rbm + svm
-    网络的输入和输出的维度都是8，代表8个特征。
 
-"""
 
 
 class SVMNet(BaseNet):
+    """ rbm_svm 的 svm 部分的网络结构 """
     def __init__(self, n_features=9):
         super(SVMNet, self).__init__()
         self.l1 = nn.Linear(n_features, 6)

@@ -5,7 +5,7 @@ from base.base_net import BaseNet
 
 
 class KddNet(BaseNet):
-
+    """ ae_kmeans, dsvdd使用该网络结构 """
     def __init__(self):
         super().__init__()
 

@@ -5,7 +5,11 @@ from base.base_net import BaseNet
 
 
 class SvddNet(BaseNet):
-    """  SvddNet 代表 deep-svdd 的网络结构 """
+    """
+        dldm-svdd 部分的网络结构
+            输入： dldm-lstm 输出的 code（8维）
+            输出： dldm-svdd 超球面的点（32维）
+    """
 
     def __init__(self):
         super().__init__()
@@ -29,7 +33,6 @@ class SvddNet(BaseNet):
 
 
 class SvddNet_Autoencoder(BaseNet):
-    """  SvddNet_Autoencoder 代表 svdd-autoencoder 的网络结构 """
 
     def __init__(self):
         super().__init__()
