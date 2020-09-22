@@ -21,7 +21,7 @@ def plot_broken_line(x, y, x_name="dos", y_name="dos", labels=[], y_scale=()):
 
 
 def get_results(datas, model_name):
-    """ 读取 """
+    """ 读取csv文件 """
     aucs = init_list(type=2, s=4)  # [[],[],[],[]]
     fscores = init_list(type=2, s=4)  # [[],[],[],[]]
     mccs = init_list(type=2, s=4)  # [[],[],[],[]]
