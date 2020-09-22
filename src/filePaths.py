@@ -1,27 +1,14 @@
-"""
-    数据集
-        src_train：   原始kdd99训练集
-        handle_train：只保留正常数据，标签为0
-        final_train： 最终训练文件
+""" 数据集 """
 
-        src_test：    原始kdd99测试集
-        handle_test： 保留normal数据，标签为0，保留dos攻击数据，标签为1
-        final_test：  最终测试文件
-
-"""
+src_train = '../data/dataset/kddcup.data_10_percent_corrected' # 原始kdd99训练集
+handle_train = '../data/dataset/kddcup.data_10_percent_corrected.csv' # 指定kdd99测试集
+final_train = '../data/dataset/kddcup.data_10_percent_final.csv' # 归一化，标准化后的kdd99训练集
+src_test = '../data/dataset/corrected' # 原始kdd99测试集
+handle_test = '../data/dataset/corrected.csv' # 指定kdd99测试集
+final_test = '../data/dataset/corrected_final.csv' # 归一化，标准化后的kdd99测试集
 
 
-src_train = '../data/dataset/kddcup.data_10_percent_corrected'
-handle_train = '../data/dataset/kddcup.data_10_percent_corrected.csv'
-final_train = '../data/dataset/kddcup.data_10_percent_final.csv'
-src_test = '../data/dataset/corrected'
-handle_test = '../data/dataset/corrected.csv'
-final_test = '../data/dataset/corrected_final.csv'
-
-
-"""
-    中间数据 fpr + tpr 来绘制roc曲线 
-"""
+""" 中间数据 fpr + tpr 来绘制roc曲线  """
 
 self_no_join_fpr = '../data/numpy_self/fpr_tpr/no_join_fpr'
 self_no_join_tpr = '../data/numpy_self/fpr_tpr/no_join_tpr'
