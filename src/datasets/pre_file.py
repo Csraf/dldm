@@ -3,23 +3,6 @@ import numpy as np
 import pandas as pd
 import csv
 
-"""
-1. 将KDD99数据集中字符型转换为数值型，只保留标签为'normal'的数据
-
-    index   dos type
-    4       neptune 
-    5       smurf
-    7       pod
-    8       teardrop
-    11      land
-    13      back
-    1       buffer_overflow  -- U2R
-    6       guess_passwd  -- R2L
-    10      ipsweep  -- Probing
-
-
-"""
-
 # label_list为全局变量
 global label_list
 
@@ -62,7 +45,19 @@ def handle_flag(inputs):
 
 
 def handle_label(inputs):
-    """ 标签类型，正常数据，dos攻击，其他攻击 """
+    """
+        标签类型：正常数据，dos攻击，其他攻击
+        index   dos type
+        4       neptune
+        5       smurf
+        7       pod
+        8       teardrop
+        11      land
+        13      back
+        1       buffer_overflow  -- U2R
+        6       guess_passwd  -- R2L
+        10      ipsweep  -- Probing
+    """
     label_list = ['normal.', 'buffer_overflow.', 'loadmodule.', 'perl.', 'neptune.', 'smurf.',
                   'guess_passwd.', 'pod.', 'teardrop.', 'portsweep.', 'ipsweep.', 'land.', 'ftp_write.',
                   'back.', 'imap.', 'satan.', 'phf.', 'nmap.', 'multihop.', 'warezmaster.', 'warezclient.',
@@ -123,12 +118,12 @@ def get_all_dos(data=0):
 
 def pre_file(source_file, handled_file, train, exper_type=0, dos_types=0):
     """
-        进阶实验
-            针对不同攻击，不同攻击数获取测试数据
+        根据不同实验需求：
+            1. 将字符型 转换为 数值型
+            2. 获取指定训练数据和测试数据
 
         属性：
-            dos_type： dos 攻击类型 1 -- neptune
-            dos_types：dos 攻击种类数 1 -- neptune, 2 -- neptune,smurf
+            dos_types：dos 攻击种类数 [1-9]
 
             exper_type：代表实验类型
                 0：基础实验 / 基础对比实验（join，ae_kmeans，dsvdd），训练集获取正常数据，测试集获取所有数据
@@ -136,8 +131,6 @@ def pre_file(source_file, handled_file, train, exper_type=0, dos_types=0):
                 2：攻击对比实验 （join，ae_kmeans，dsvdd）：训练集获取正常数据，测试集获取正常数据 + 指定攻击
                 3：攻击对比实验 （rbm）：训练集获取所有数据，测试集获取正常数据 + 指定攻击
                 4：基础对比实验(单类 rbm)：训练集获取所有正常数据，正常数据和异常数据比例为100:1，测试集获取所有数据
-
-        注意： 上面两个特征，肯定有一个是 0
     """
     data_file = open(handled_file, 'w', newline='')
     with open(source_file, 'r') as data_source:
