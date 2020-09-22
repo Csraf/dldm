@@ -8,7 +8,7 @@ from optim.aek_trainer import AEKTrainer
 
 class AEK(object):
     """
-    对比实验：Autoencoder + Kmeans
+        对比实验 ae + kmeans
     """
 
     def __init__(self):

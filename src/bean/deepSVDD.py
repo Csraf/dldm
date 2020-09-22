@@ -9,21 +9,8 @@ from lstm import Lstm
 
 
 class DeepSVDD(object):
-    """A class for the Deep SVDD method.
-
-    Attributes:
-        objective: A string specifying the Deep SVDD objective (either 'one-class' or 'soft-boundary').
-        nu: Deep SVDD hyperparameter nu (must be 0 < nu <= 1).
-        R: Hypersphere radius R.
-        c: Hypersphere center c.
-        net_name: A string indicating the name of the neural networks to use.
-        net: The neural networks \phi.
-        ae_net: The autoencoder networks corresponding to \phi for networks weights pretraining.
-        trainer: DeepSVDDTrainer to train a Deep SVDD model.
-        optimizer_name: A string indicating the optimizer to use for training the Deep SVDD networks.
-        ae_trainer: AETrainer to train an autoencoder in pretraining.
-        ae_optimizer_name: A string indicating the optimizer to use for pretraining the autoencoder.
-        results: A dictionary to save the results.
+    """
+        dldm-svdd 部分的逻辑代码
     """
 
     def __init__(self, lstm: Lstm, objective: str = 'one-class', nu: float = 0.1, n_code=8):

@@ -5,7 +5,7 @@ from optim.rbm_trainer import RBMTrainer
 
 class RBM(object):
     """
-    对比实验： rbm + svm
+        对比实验： rbm + svm
     """
 
     def __init__(self, n_visible=9, n_hidden=9, momentum=0.5, learning_rate=0.1, max_epoch=50,

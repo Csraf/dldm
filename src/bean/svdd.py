@@ -9,7 +9,7 @@ from optim.svdd_ae_trainer import SvddAETrainer
 
 class SDeepSVDD(object):
     """
-        对比实验 svdd
+        对比实验 dsvdd
     """
 
     def __init__(self, objective: str = 'one-class', nu: float = 0.1):

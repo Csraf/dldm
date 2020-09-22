@@ -7,9 +7,7 @@ from optim.join_trainer import JoinTrainer
 
 class Join(object):
     """
-    联合训练 -- dldm
-        svddNet loss
-        lstmNet decode loss
+        dldm-join(联合训练)部分的逻辑代码
 
     """
 

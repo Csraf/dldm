@@ -8,20 +8,7 @@ from optim.lstm_trainer import LstmTrainer
 
 class Lstm(object):
     """
-    lstm autoencoder 网络的操作流程
-
-        训练 lstm 网络，输出 train_code 和 train_label.
-        测试 lstm 网络，输出 test_code 和 test_label.
-
-    属性：
-        train_code:训练 lstm 时, 每条数据输出的码.
-        test_code: 测试 lstm 时, 每条数据输出的码.
-        train_label: 测试 lstm 时, 每条数据对应的标签
-        test_label: 训练 lstm 时,每条数据对应的标签
-
-        trainer: lstm网络的优化器采用的是 RMSprop+momentum
-        optimizer_name: RMSprop
-        results: 一个 dict 表示时间
+        dldm-lstm 部分的逻辑代码
 
     """
 
