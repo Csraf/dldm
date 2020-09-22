@@ -59,7 +59,6 @@ class AEK(object):
         self.ae_trainer.test(dataset, self.ae_net, flg=0)
         self.results['test_auc'] = self.ae_trainer.test_auc
         self.results['test_time'] = self.ae_trainer.test_time
-        self.results['test_score'] = self.ae_trainer.test_score
         self.results['test_f_score'] = self.ae_trainer.test_f_score
         self.results['test_mcc'] = self.ae_trainer.test_mcc
         self.results['test_ftr'] = self.ae_trainer.test_ftr

@@ -26,7 +26,6 @@ def self_compare_exper(device: str = 'cuda', n_features=9, alpha=0.1, n=1, s=2):
     tprs = init_list(s=s, type=2)  # [[],[]]
 
     kdd99_dataset = Kdd99_Dataset(n_features=n_features, exper_type=0, dos_types=0)
-    test_labels = kdd99_dataset.test_labels
 
     for i in range(n):
         print("---------- 第", i + 1, "轮迭代 ----------")

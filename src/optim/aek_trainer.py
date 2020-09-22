@@ -25,7 +25,6 @@ class AEKTrainer(BaseTrainer):
 
         self.test_auc = None
         self.test_time = None
-        self.test_score = None
         self.test_f_score = None
         self.test_mcc = None
         self.test_ftr = None
@@ -159,7 +158,6 @@ class AEKTrainer(BaseTrainer):
                     pred_labels.append(0)
 
             pred_labels = np.array(pred_labels)
-            self.test_score = pred_labels
             self.test_ftr, self.test_tpr, _ = roc_curve(labels, pred_labels)
             # roc_self.test_auc = roc_auc_score(pred_labels, labels)
             fpr, tpr, thresholds = roc_curve(labels, pred_labels)  # 面积作为准确率
