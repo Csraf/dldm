@@ -2,30 +2,6 @@ import torch
 import numpy as np
 import csv
 import pandas
-"""
-数据预处理：
-    输入文件名 xx.csv 
-    输出文件名 xx_final.csv
-
-选取实验需要的特征，就是下面八个特征。
-    1  protocol_type 离散型
-    3  src_bytes  
-    22 count
-    23 srv_count
-    30 srv_diff_host_rate
-    31 dst_host_count
-    32 dst_host_srv_count
-    37 dst_host_src_diff_host_rate
-
-标准化处理
-    连续型：l2 norm
-    离散型：不作处理
-
-归一化处理
-    离散型：最大值最小值归一化
-    连续型：最大值最小值归一化
-
-"""
 
 
 def z_score_normalization(x):
@@ -55,7 +31,31 @@ def min_max_normalizations(x_mat):
 
 
 def load_data_kdd99(handled_file, final_file,  features):
-    """ 加载kdd99数据集 """
+    """
+        数据预处理：
+            输入文件名 xx.csv
+            输出文件名 xx_final.csv
+
+        选取实验需要的特征，就是下面八个特征。
+            1  protocol_type 离散型
+            3  src_bytes
+            22 count
+            23 srv_count
+            30 srv_diff_host_rate
+            31 dst_host_count
+            32 dst_host_srv_count
+            37 dst_host_src_diff_host_rate
+            xx duration
+
+        标准化处理
+            连续型：l2 norm
+            离散型：不作处理
+
+        归一化处理
+            离散型：最大值最小值归一化
+            连续型：最大值最小值归一化
+
+    """
     fr = open(handled_file)
     lines = fr.readlines()
     rows = len(lines)
@@ -91,58 +91,6 @@ def load_data_kdd99(handled_file, final_file,  features):
             x_mat[i][7] = item_mat[0]   # duration
 
         y_label[i] = item_mat[41]   # label
-        # print(i, "-", x_mat[i][0], x_mat[i][1], x_mat[i][2], x_mat[i][3], x_mat[i][4], x_mat[i][5], x_mat[i][6], x_mat[i][7])
-
-    fr.close()
-    x_mat = z_score_normalizations(x_mat)
-    x_mat = min_max_normalizations(x_mat)
-
-    write_file(x_mat, final_file)
-    return x_mat, y_label
-
-
-def load_data_sdn(handled_file, final_file,  features):
-    """ 加载 sdn ryu 采集到的数据 """
-    fr = open(handled_file)
-    lines = fr.readlines()
-    rows = len(lines)
-
-    x_mat = np.zeros((rows, features))
-    y_label = np.zeros(rows)
-
-    for i in range(rows):
-        line = lines[i].strip()
-        item_mat = line.split(',')
-        print("item_mat[0]", item_mat[0])
-        x_mat[i][0] = item_mat[0]   # protocol_type
-        if int(item_mat[0]) == 6:  # tcp
-            x_mat[i][0] = 0
-        elif int(item_mat[0]) == 17:  # udp
-            x_mat[i][0] = 1
-        else:
-            x_mat[i][0] = 2
-        if features == 9:
-            x_mat[i][1] = item_mat[1]   # src_bytes
-            x_mat[i][2] = item_mat[3]   # count
-            x_mat[i][3] = item_mat[4]   # srv_count
-            x_mat[i][4] = item_mat[5]   # srv_diff_host_rate
-            x_mat[i][5] = item_mat[6]   # dst_host_count
-            x_mat[i][6] = item_mat[7]   # dst_host_srv_count
-            x_mat[i][7] = item_mat[8]   # dst_host_src_diff_host_rate
-            x_mat[i][8] = item_mat[9]   # flow_duration
-
-        # 不考虑svc_bytes
-
-        elif features == 8:
-            x_mat[i][1] = item_mat[3]   # count
-            x_mat[i][2] = item_mat[4]   # srv_count
-            x_mat[i][3] = item_mat[5]   # srv_diff_host_rate
-            x_mat[i][4] = item_mat[6]   # dst_host_count
-            x_mat[i][5] = item_mat[7]   # dst_host_srv_count
-            x_mat[i][6] = item_mat[8]   # dst_host_src_diff_host_rate
-            x_mat[i][7] = item_mat[9]   # flow_duration
-
-        y_label[i] = 0   # label
         # print(i, "-", x_mat[i][0], x_mat[i][1], x_mat[i][2], x_mat[i][3], x_mat[i][4], x_mat[i][5], x_mat[i][6], x_mat[i][7])
 
     fr.close()

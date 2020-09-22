@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import csv
 
-# label_list为全局变量
 global label_list
 
 
@@ -121,6 +120,7 @@ def pre_file(source_file, handled_file, train, exper_type=0, dos_types=0):
         根据不同实验需求：
             1. 将字符型 转换为 数值型
             2. 获取指定训练数据和测试数据
+            3. 输入文件名 xx，输出文件名 xx.csv
 
         属性：
             dos_types：dos 攻击种类数 [1-9]

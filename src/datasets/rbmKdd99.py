@@ -10,10 +10,10 @@ class RBMDataset(TorchvisionDataset):
             该数据集作为 svm 模型的输入
 
         属性：
-            rbm_train：训练集的数据,       shape = (10000, 8)
-            rbm_train_label：训练集的标签  shape = (10000,)
-            rbm_test：测试集的数据         shape = (10000, 8)
-            rbm_test_label：测试集的标签   shape = (10000,)
+            rbm_train：训练集的数据,       shape = (xxxxx, 9)
+            rbm_train_label：训练集的标签  shape = (xxxxx,)
+            rbm_test：测试集的数据         shape = (xxxxx, 9)
+            rbm_test_label：测试集的标签   shape = (xxxxx,)
 
     """
     def __init__(self, rbm_train, rbm_train_label, rbm_test, rbm_test_label):

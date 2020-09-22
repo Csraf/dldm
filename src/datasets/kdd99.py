@@ -1,7 +1,7 @@
 import torch.utils.data.dataset as Dataset
 import torch
 from datasets.pre_file import pre_file
-from datasets.pre_data import load_data_kdd99, load_data_sdn
+from datasets.pre_data import load_data_kdd99
 from filePaths import src_train
 from filePaths import src_test
 
