@@ -1,3 +1,4 @@
+from JoinNet import JoinNet
 from base.base_dataset import BaseADDataset
 from lstm import Lstm
 from bean.deepSVDD import DeepSVDD
@@ -7,13 +8,11 @@ from optim.join_trainer import JoinTrainer
 
 class Join(object):
     """
-        dldm-join(联合训练)部分的逻辑代码
-
+        联合训练 -- dldm
     """
 
     def __init__(self, lstm: Lstm, deepsvdd: DeepSVDD, alpha=0.3, n_features=8):
-        self.lstm_net = lstm.net
-        self.svdd_net = deepsvdd.net
+        self.join_net = JoinNet(lstm_net=lstm.net, svdd_net=deepsvdd.net)
 
         self.alpha = alpha
         self.n_features = n_features
@@ -71,7 +70,8 @@ class Join(object):
                                    device=device,
                                    n_features=self.n_features,
                                    alpha=self.alpha)
-        self.lstm_net, self.svdd_net = self.trainer.train(dataset=dataset, net1=self.lstm_net, net2=self.svdd_net)
+
+        self.join_net = self.trainer.train(dataset=dataset, net=self.join_net)
         self.results['train_time'] = self.trainer.train_time
 
     def test(self, dataset: BaseADDataset, device: str = 'cuda', n_jobs_dataloader: int = 0):
@@ -83,7 +83,7 @@ class Join(object):
             self.trainer = JoinTrainer(self.objective, self.R, self.c, self.nu,
                                        device=device, n_jobs_dataloader=n_jobs_dataloader)
 
-        self.trainer.test(dataset=dataset, net1=self.lstm_net, net2=self.svdd_net)
+        self.trainer.test(dataset=dataset, net=self.join_net)
 
         # Get results
         self.results['test_auc'] = self.trainer.test_auc

@@ -18,6 +18,23 @@ from filePaths import join_tpr
 from utils.roc_utils import roc_mean
 
 
+def init_array2(s=4, m=9, type=0):
+    """ 九种攻击，四种算法 构造二维数组(s, m)"""
+    if type == 0:
+        return [([0.0] * m) for i in range(s)]
+    elif type == 1:
+        return [([[]] * m) for i in range(s)]
+    return None
+
+
+def mean_array2(s=4, m=9, n=1, datas=None):
+    """ 九种攻击，四种算法 二维数组(s, m)取平均值 """
+    for i in range(s):
+        for j in range(m):
+            datas[i][j] = datas[i][j] / n
+    return datas
+
+
 def init_list(s=4, type=0):
     """ 初始化 list """
     if type == 0:

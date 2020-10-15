@@ -1,3 +1,4 @@
+from JoinNet import JoinNet
 from base.base_trainer import BaseTrainer
 from base.base_dataset import BaseADDataset
 from base.base_net import BaseNet
@@ -71,7 +72,7 @@ class JoinTrainer(BaseTrainer):
         self.test_ftr = None
         self.test_tpr = None
 
-    def train(self, dataset: BaseADDataset, net1: BaseNet, net2: BaseNet):
+    def train(self, dataset: BaseADDataset, net: BaseNet):
         """
             net1：lstmNet
             net2：svddNet
@@ -79,23 +80,18 @@ class JoinTrainer(BaseTrainer):
         logger = logging.getLogger()
 
         # Set device for networks
-
-        lstm_net = net1.to(self.device)
-        svdd_net = net2.to(self.device)
-
+        join_net =net.to(self.device)
         train_loader, _ = dataset.loaders(batch_size=self.batch_size, num_workers=self.n_jobs_dataloader)
 
-        optimizer1 = optim.Adam(lstm_net.parameters(), lr=self.lr_2, weight_decay=self.weight_decay_2)
-        optimizer2 = optim.Adam(svdd_net.parameters(), lr=self.lr_2, weight_decay=self.weight_decay_2)
+        optimizer = optim.Adam(join_net.parameters(), lr=self.lr_2, weight_decay=self.weight_decay_2)
 
         # Set learning rate scheduler
-        scheduler = optim.lr_scheduler.MultiStepLR(optimizer2, milestones=self.lr_milestones_2, gamma=0.1)
+        scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=self.lr_milestones_2, gamma=0.1)
 
         # Training
         logger.info('Starting train join ...')
         start_time = time.time()
-        lstm_net.train()
-        svdd_net.train()
+        join_net.train()
         for epoch in range(self.n_epochs):
 
             scheduler.step()
@@ -110,14 +106,11 @@ class JoinTrainer(BaseTrainer):
                 inputs = inputs.to(self.device)
 
                 # Zero the networks parameter gradients
-                optimizer1.zero_grad()
-                optimizer2.zero_grad()
+                optimizer.zero_grad()
 
                 # join train two network
-                code, lstm_out = lstm_net(inputs.view(-1, 1, self.n_features))
-                svdd_out = svdd_net(code)
+                lstm_out, svdd_out = join_net(inputs.view(-1, 1, self.n_features))
 
-                # get svdd_loss , lstm_loss
                 dist = torch.sum((svdd_out - self.c) ** 2, dim=1)
 
                 if self.objective == 'soft-boundary':
@@ -130,8 +123,7 @@ class JoinTrainer(BaseTrainer):
                 loss = svdd_loss + self.alpha * lstm_loss
 
                 loss.backward()
-                optimizer2.step()
-                optimizer1.step()
+                optimizer.step()
 
                 # Update hypersphere radius R on mini-batch distances
                 if (self.objective == 'soft-boundary') and (epoch >= self.warm_up_n_epochs):
@@ -149,15 +141,13 @@ class JoinTrainer(BaseTrainer):
         logger.info('Training time: %.3f' % self.train_time)
         logger.info('Finished training.')
 
-        return lstm_net, svdd_net
+        return join_net
 
-    def test(self, dataset: BaseADDataset, net1: BaseNet, net2: BaseNet):
+    def test(self, dataset: BaseADDataset, net: BaseNet):
         logger = logging.getLogger()
 
         # Set device for networks
-        lstm_net = net1.to(self.device)
-        svdd_net = net2.to(self.device)
-
+        join_net = net.to(self.device)
         # Get test data loader
         _, test_loader = dataset.loaders(batch_size=self.batch_size, num_workers=self.n_jobs_dataloader)
 
@@ -165,18 +155,16 @@ class JoinTrainer(BaseTrainer):
         logger.info('Starting testing...')
         start_time = time.time()
         idx_label_score = []
-        lstm_net.eval()
-        svdd_net.eval()
+        join_net.eval()
         with torch.no_grad():
             for data in test_loader:
                 inputs, labels, idx = data
                 inputs = inputs.to(self.device)
 
                 # Update networks parameters via back propagation: forward + backward + optimize
-                code, _ = lstm_net(inputs.view(-1, 1, self.n_features))
-                outputs = svdd_net(code)
+                _, svdd_out = join_net(inputs.view(-1, 1, self.n_features))
 
-                dist = torch.sum((outputs - self.c) ** 2, dim=1)
+                dist = torch.sum((svdd_out - self.c) ** 2, dim=1)
                 if self.objective == 'soft-boundary':
                     scores = dist - self.R ** 2
                 else:

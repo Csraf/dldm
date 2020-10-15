@@ -48,11 +48,16 @@ class SVM(object):
                                   n_jobs_dataloader=n_jobs_dataloader)
         # Get the model
         self.net = self.trainer.train(dataset=dataset, svm_net=self.net)
+
+    def test(self, dataset: BaseADDataset, device: str = 'cpu', n_jobs_dataloader=0):
+        if self.trainer is None:
+            self.trainer = SVMTrainer(device=device, n_jobs_dataloader=n_jobs_dataloader)
+
         self.trainer.test(dataset=dataset, svm_net=self.net)
+
         self.results['test_auc'] = self.trainer.test_auc
         self.results['test_time'] = self.trainer.test_time
-        self.results['test_score'] = self.trainer.test_score
-        self.results['test_f_score'] = self.trainer.test_f_score
         self.results['test_mcc'] = self.trainer.test_mcc
+        self.results['test_f_score'] = self.trainer.test_f_score
         self.results['test_ftr'] = self.trainer.test_ftr
         self.results['test_tpr'] = self.trainer.test_tpr

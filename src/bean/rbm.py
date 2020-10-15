@@ -42,24 +42,18 @@ class RBM(object):
         res = np.array(res)
         return res
 
-    def compute(self, train_data, train_label, test_data, test_label):
-        """ rbm的整体流程，输出重构数据与标签 """
-
-        self.rbm_train_label = train_label
-        self.rbm_test_label = test_label
-
-        print("train_data", train_data.shape)
-        print("test_data", test_data.shape)
-        print("train_label", train_label.shape)
-        print("test_label", test_label.shape)
-
+    def train(self, train_data):
+        """ 训练 rbm 模型 """
         self.rbm_trainer = RBMTrainer(n_visible=self.n_visible, n_hidden=self.n_hidden,
                                       max_epoch=self.max_epoch, learning_rate=self.learning_rate)
         self.rbm_trainer.fit(train_data)
         self.rbm_train = self.rbm_trainer.predict(train_data)
 
+    def test(self, train_data, train_label, test_data, test_label):
+        """ 测试 rbm 模型 -- 获取测试时间 """
+        self.rbm_train_label = train_label
+        self.rbm_test_label = test_label
         start = time.time()
-        self.rbm_test = self.rbm_trainer.predict(test_data)  # 在这里获取 测试数据经由 rbm 重构时间
+        self.rbm_test = self.rbm_trainer.predict(test_data)
         self.results['test_time'] = time.time() - start
-
         return self.rbm_train, self.rbm_train_label, self.rbm_test, self.rbm_test_label

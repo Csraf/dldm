@@ -16,12 +16,16 @@ class SvddNet(BaseNet):
 
         self.rep_dim = 32
 
-        self.fc1 = nn.Linear(8,  16, bias=False)
+        self.fc1 = nn.Linear(8, 16, bias=False)
         self.fc2 = nn.Linear(16, 32, bias=False)
         self.fc3 = nn.Linear(32, 64, bias=False)
         self.fc4 = nn.Linear(64, 32, bias=False)
 
     def forward(self, x):
+        x = self.compute(x)
+        return x
+
+    def compute(self, x):
         x = self.fc1(x)
         x = F.leaky_relu(x)
         x = self.fc2(x)

@@ -2,6 +2,7 @@ from .SvddNet import SvddNet, SvddNet_Autoencoder
 from .KddNet import KddNet, KddNet_Autoencoder
 from .LstmNet import LstmNet
 from .SvmNet import SVMNet
+from .JoinNet import JoinNet
 
 
 def build_network(net_name,  n_features=9):
@@ -22,6 +23,9 @@ def build_network(net_name,  n_features=9):
 
     if net_name == 'SVMNet':
         net = SVMNet(n_features)
+
+    # if net_name == 'JoinNet':
+    #     net = JoinNet()
 
     return net
 
